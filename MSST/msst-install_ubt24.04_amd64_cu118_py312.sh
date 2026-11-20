@@ -50,6 +50,7 @@ else
   echo "开始下载模型（约 3.3GB）..."
   python3 - <<'PY'
 import json
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -67,6 +68,9 @@ info_path = Path("data/models_info.json")
 if not info_path.is_file():
     info_path = Path("data_backup/models_info.json")
 info = json.loads(info_path.read_text(encoding="utf-8"))
+if not Path("configs").is_dir():
+    shutil.copytree("configs_backup", "configs")
+    print("已从 configs_backup 生成 configs 目录", flush=True)
 def human(size):
     return f"{size / 1e9:.2f} GB" if size >= 1e9 else f"{size / 1e6:.1f} MB"
 def download(url, dest):
