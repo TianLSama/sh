@@ -20,15 +20,17 @@ PY
 python -c "import transformers, gradio, httpx; print('transformers', transformers.__version__, '| gradio', gradio.__version__, '| httpx', httpx.__version__)"
 python -m pip check
 hf download lj1995/VoiceConversionWebUI --revision main \
-  --include "hubert_base/*" "pretrained/*" "pretrained_v2/*" "rmvpe.pt" \
+  --include "hubert_base/*" "pretrained/*" "pretrained_v2/*" \
   --local-dir assets
+hf download lj1995/VoiceConversionWebUI rmvpe.pt --revision main \
+  --local-dir assets/rmvpe
 hf download lj1995/VoiceConversionWebUI mute.zip --revision main \
   --local-dir .model-downloads
 mkdir -p logs
 python -m zipfile -e .model-downloads/mute.zip logs
 hf download lj1995/VoiceConversionWebUI --revision main \
   --include "pymss_weights/*" --local-dir assets
-test -f assets/rmvpe.pt
+test -f assets/rmvpe/rmvpe.pt
 test -f assets/hubert_base/config.json
 test -f assets/hubert_base/pytorch_model.bin
 test "$(ls assets/pretrained/*.pth | wc -l)" -ge 6
