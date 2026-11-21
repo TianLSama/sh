@@ -34,12 +34,16 @@ Path("requirements_nocu.txt").write_text("\n".join(lines) + "\n", encoding="utf-
 print(f"requirements_nocu.txt: {len(lines)} 个包")
 PY
 python -m pip install -r requirements_nocu.txt
+python -m pip install "neuraloperator==2.0.0"
+python -m pip install --no-deps "packaging==23.2"
+python -m pip install "pytest==8.3.5" "pytest-mock==3.14.0"
 python -m pip install --force-reinstall --no-deps tools/webUI_for_clouds/librosa-0.9.2-py3-none-any.whl
 python - <<'PY'
 import torch
 assert torch.__version__.endswith("+cu118"), f"torch 不是 cu118 构建：{torch.__version__}"
 print("torch:", torch.__version__, "| cuda:", torch.version.cuda, "| cuda available:", torch.cuda.is_available())
 PY
+python -c "import neuralop; from neuralop.models import FNO; print('neuralop', neuralop.__version__, '| FNO OK')"
 python -c "import torchaudio, torchvision; print('torchaudio', torchaudio.__version__, '| torchvision', torchvision.__version__)"
 python -c "import librosa, gradio, transformers, numpy as np, fastapi, pydantic; print('librosa', librosa.__version__, '| gradio', gradio.__version__, '| transformers', transformers.__version__, '| numpy', np.__version__)"
 python -m pip check || true
